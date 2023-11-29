@@ -22,15 +22,14 @@ for line_number, line in enumerate(lines_GED):
 lines_coord = file_coord.readlines()
 
 line_coord_number = None
-pattern = r'\D(' + re.escape(INSEE) + r')\D'
+pattern = r'\bPPLA.?\b.*\b' + re.escape(INSEE) + r'\b' #ligne qui contient PPLA / PPLA2 / ... (lieu habité de division administratif, pour ne pas s'accrocher aux hameaux, quartiers...) + le code INSEE
+print(pattern)
+
 
 for index, line_coord in enumerate(lines_coord, start=1):
     if re.search(pattern, line_coord):
-    #if re.search(r"\D(30189)\D", line_coord): #en serie - espace ou tabulation ; 5 digits ; espace ou tabulation
         line_number = index
         print("ligne trouvé FR.txt", line_number)
         break
 
 
-
-#if re.search(r"[  ]+(\d{5})[  ]+", line_coord): #en serie - espace ou tabulation ; 5 digits ; espace ou tabulation
