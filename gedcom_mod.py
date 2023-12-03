@@ -11,7 +11,7 @@ def recherche_coord(coord_file_list, INSEE):
         if re.search(pattern_ville_1, line_coord):
             break
 
-    if line_number_coord + 1 == len(coord_file_list):
+    if line_number_coord + 1 == len(coord_file_list): #si la première boucle a parcouru tout le fichier, il est considiré que la recherche sur PPLA est infructueuse.
         for line_number_coord, line_coord in enumerate(coord_file_list):
             if re.search(pattern_ville_2, line_coord):
                 break
@@ -19,7 +19,7 @@ def recherche_coord(coord_file_list, INSEE):
 
     ville = coord_file_list[line_number_coord]
     pattern_lat_long = r'(-?\d{1,3}\.\d+)' #signe - optionnel, valeur de 1 à 3 chiffres, un point, et un ou plusieurs chiffres
-    lat_long = re.findall(pattern_lat_long, ville) #renvoi un liste avec lat puis long
+    lat_long = re.findall(pattern_lat_long, ville) #renvoi une liste avec lat puis long
     return(lat_long)
 
 
@@ -50,8 +50,10 @@ nb_insertion = 0 #Variable pour compter le nombre d'insertion de coordonnées et
 for line_number_GED, line_GED in enumerate(GED_file_list):
     GED_mod_file_list.append(line_GED) #copie de la ligne GED en cours
 
-    INSEE = re.search(r"\D+(\d{5})\D+", line_GED) #en série - caractères non digits, 1 ou plus ; 5 digits ; caractères non digits, 1 ou plus
-    
+    #INSEE = re.search(r"\D+(\d{5})\D+", line_GED) #en série - caractères non digits, 1 ou plus ; 5 digits ; caractères non digits, 1 ou plus
+    #INSEE = re.search(r"[ ,](\d{5})[ ,]", line_GED) #en série - espace ou virgule ; 5 digits ; espace ou virgule
+    INSEE = re.search(r"\bPLAC\b.*(\d{5})", line_GED) #en série text avec PLAC, des caractères et 5 digits
+
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
         #print("Code INSEE lu", INSEE)
@@ -69,3 +71,6 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
 ##Ecriture fichier GED modifié, complété avec les coordonnées lat/long
 for ligne_ecriture in GED_mod_file_list:
     file_GED_mod.write(ligne_ecriture)
+
+
+print("Nombre de coordonnées ajoutées : ", nb_insertion)
