@@ -2,13 +2,20 @@ import os #pour lecture du dossier courant
 import re #pour regex
 
 def recherche_coord(coord_file_list, INSEE):
-    pattern_ville = r'\bPPLA.?\b.*\b' + re.escape(INSEE) + r'\b' #ligne qui contient PPLA / PPLA2 / ... (lieu habité de division administrative, pour ne pas s'accrocher aux hameaux, quartiers...) + le code INSEE
+    lat_long = False
 
+    pattern_ville_1 = r'\bPPLA.?\b.*\b' + re.escape(INSEE) + r'\b' #ligne qui contient PPLA / PPLA2 / ... (lieu habité de division administrative, pour ne pas s'accrocher aux hameaux, quartiers...) + le code INSEE
+    pattern_ville_2 = r'\bPPL.?\b.*\b' + re.escape(INSEE) + r'\b' #ligne qui contient PPL ... (lieu habité) + le code INSEE
+    
     for line_number_coord, line_coord in enumerate(coord_file_list):
-        if re.search(pattern_ville, line_coord):
-            #line_number = index
-            #print("ligne trouvé FR.txt", line_number_coord)
+        if re.search(pattern_ville_1, line_coord):
             break
+
+    if line_number_coord + 1 == len(coord_file_list):
+        for line_number_coord, line_coord in enumerate(coord_file_list):
+            if re.search(pattern_ville_2, line_coord):
+                break
+
 
     ville = coord_file_list[line_number_coord]
     pattern_lat_long = r'(-?\d{1,3}\.\d+)' #signe - optionnel, valeur de 1 à 3 chiffres, un point, et un ou plusieurs chiffres
@@ -47,8 +54,8 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
     
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
-        print("Code INSEE lu", INSEE)
-        print("Ligne associée", line_number_GED+1)
+        #print("Code INSEE lu", INSEE)
+        #print("Ligne associée", line_number_GED+1)
         
         lat_long = recherche_coord(coord_file_list, INSEE)
         
