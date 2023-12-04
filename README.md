@@ -13,3 +13,6 @@ L'exécution prend quelques dizaines de secondes, en fonction de la taille du fi
 - téélcharger le fichier de scipt python gedcom_mod.py et le fichier source des coordonnées FR.txt
 - déposer le même dossier le fichier .ged à compléter, par défaut nommé base.ged, sinon adapter le script
 - exécuter le script avec la commande ```python gedcom_mod.py```
+
+## English
+This script aims to add latitude and longitude to a GEDCOM file for French cities when the INSEE code is used to specify the event location. (The INSEE code is a unique identifier for each French city.)
