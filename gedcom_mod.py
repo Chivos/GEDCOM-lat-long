@@ -1,27 +1,21 @@
+from time import time
+debut = time()
 import os #pour lecture du dossier courant
 import re #pour regex
 
 def recherche_coord(coord_file_list, INSEE):
     lat_long = False
 
-    pattern_ville_1 = r'\bPPLA.?\b.*\b' + re.escape(INSEE) + r'\b' #ligne qui contient PPLA / PPLA2 / ... (lieu habité de division administrative, pour ne pas s'accrocher aux hameaux, quartiers...) + le code INSEE
-    pattern_ville_2 = r'\bPPL.?\b.*\b' + re.escape(INSEE) + r'\b' #ligne qui contient PPL ... (lieu habité) + le code INSEE
+    pattern_ville = r'^' + re.escape(INSEE)
     
     for line_number_coord, line_coord in enumerate(coord_file_list):
-        if re.search(pattern_ville_1, line_coord):
+        if re.search(pattern_ville, line_coord):
             break
-
-    if line_number_coord + 1 == len(coord_file_list): #si la première boucle a parcouru tout le fichier, il est considiré que la recherche sur PPLA est infructueuse.
-        for line_number_coord, line_coord in enumerate(coord_file_list):
-            if re.search(pattern_ville_2, line_coord):
-                break
-
 
     ville = coord_file_list[line_number_coord]
     pattern_lat_long = r'(-?\d{1,3}\.\d+)' #signe - optionnel, valeur de 1 à 3 chiffres, un point, et un ou plusieurs chiffres
     lat_long = re.findall(pattern_lat_long, ville) #renvoi une liste avec lat puis long
     return(lat_long)
-
 
 ###################################################################################################
 ###################  FIN FONCTIONS, DEBUT SCRIPT  ###################
@@ -74,3 +68,4 @@ for ligne_ecriture in GED_mod_file_list:
 
 
 print("Nombre de coordonnées ajoutées : ", nb_insertion)
+print("Durée : ", time()-debut)
