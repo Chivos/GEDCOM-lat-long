@@ -44,14 +44,10 @@ nb_insertion = 0 #Variable pour compter le nombre d'insertion de coordonnées et
 for line_number_GED, line_GED in enumerate(GED_file_list):
     GED_mod_file_list.append(line_GED) #copie de la ligne GED en cours
 
-    #INSEE = re.search(r"\D+(\d{5})\D+", line_GED) #en série - caractères non digits, 1 ou plus ; 5 digits ; caractères non digits, 1 ou plus
-    #INSEE = re.search(r"[ ,](\d{5})[ ,]", line_GED) #en série - espace ou virgule ; 5 digits ; espace ou virgule
     INSEE = re.search(r"\bPLAC\b.*(\d{5})", line_GED) #en série text avec PLAC, des caractères et 5 digits
 
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
-        #print("Code INSEE lu", INSEE)
-        #print("Ligne associée", line_number_GED+1)
         
         lat_long = recherche_coord(coord_file_list, INSEE)
         
@@ -67,5 +63,5 @@ for ligne_ecriture in GED_mod_file_list:
     file_GED_mod.write(ligne_ecriture)
 
 
-print("Nombre de coordonnées ajoutées : ", nb_insertion)
-print("Durée : ", time()-debut)
+print("Nombre de coordonnées ajoutées :", nb_insertion)
+print("Durée :", round(time()-debut, 1), "secondes")
