@@ -6,6 +6,10 @@ Ajouter latitude et longitude aux fichiers GEDCOM, à partir du code INSEE de la
 - récuper les coordonnées LAT / LONG à partir des données issues de https://www.data.gouv.fr/fr/datasets/communes-de-france-base-des-codes-postaux/ (et modifié pour supprimer les données non nécessaires, les doublons, et ajouter les codes INSEE pour les villes à arrondissements)
 - les insérer dans le fichier GED avec les bonnes balises
 
+En complément :
+- supprimer les lieux dits saisis au format Généanet
+- ajouter dans le header du GEDCOM la description du format de saisie des lieux
+
 L'exécution prend quelques dizaines de secondes, en fonction de la taille du fichier GED en entrée.
 
 
