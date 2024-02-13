@@ -37,11 +37,14 @@ GED_mod_file_list = [] #Liste du GED complété
 
 nb_insertion = 0 #Variable pour compter le nombre d'insertion de coordonnées et corriger la dérive entre le fichier GED d'entrée et sa copie
 
+GED_file_list[1:1] = ['1 PLAC\n', '2 FORM city, area code, county, state, country\n'] #Ajout dans l'en-tête de la description du format des lieux
+
 ###################################################################################################
 ###################  BOUCLE PRINCIPALE  ###################
 ###################################################################################################
 
 for line_number_GED, line_GED in enumerate(GED_file_list):
+    line_GED = re.sub(r"\[.*] - " , '', line_GED) #Suppression du lieu dit au format Geneanet "[Lieu-dit] - "
     GED_mod_file_list.append(line_GED) #copie de la ligne GED en cours
 
     INSEE = re.search(r"\bPLAC\b.*(\d{5})", line_GED) #en série text avec PLAC, des caractères et 5 digits
