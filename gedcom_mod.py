@@ -6,15 +6,16 @@ import re #pour regex
 def recherche_coord(coord_file_list, INSEE):
     lat_long = False
 
-    pattern_ville = r'^' + re.escape(INSEE)
+    pattern_ville = r'^' + re.escape(INSEE) #regex pour recherche code INSEE
+    pattern_lat_long = r'(-?\d{1,3}\.\d+)' #signe - optionnel, valeur de 1 à 3 chiffres, un point, et un ou plusieurs chiffres #regex pour rechercher coordonées géographiques
     
     for line_number_coord, line_coord in enumerate(coord_file_list):
         if re.search(pattern_ville, line_coord):
+            ville = coord_file_list[line_number_coord]
+            lat_long = re.findall(pattern_lat_long, ville) #renvoi une liste avec lat puis long
             break
 
-    ville = coord_file_list[line_number_coord]
-    pattern_lat_long = r'(-?\d{1,3}\.\d+)' #signe - optionnel, valeur de 1 à 3 chiffres, un point, et un ou plusieurs chiffres
-    lat_long = re.findall(pattern_lat_long, ville) #renvoi une liste avec lat puis long
+
     return(lat_long)
 
 ###################################################################################################
@@ -54,11 +55,15 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
         
         lat_long = recherche_coord(coord_file_list, INSEE)
         
-        GED_mod_file_list.insert(line_number_GED+1 + nb_insertion*3, "3 MAP\n")
-        GED_mod_file_list.insert(line_number_GED+2 + nb_insertion*3, "4 LATI N" + lat_long[0] + "\n")
-        GED_mod_file_list.insert(line_number_GED+3 + nb_insertion*3, "4 LONG E" + lat_long[1] + "\n")
+        if lat_long != False:
+            GED_mod_file_list.insert(line_number_GED+1 + nb_insertion*3, "3 MAP\n")
+            GED_mod_file_list.insert(line_number_GED+2 + nb_insertion*3, "4 LATI N" + lat_long[0] + "\n")
+            GED_mod_file_list.insert(line_number_GED+3 + nb_insertion*3, "4 LONG E" + lat_long[1] + "\n")
 
-        nb_insertion += 1
+            nb_insertion += 1
+        
+        else:
+            print("Non trouvé pour le code INSEE :", INSEE)
 
 
 ##Ecriture fichier GED modifié, complété avec les coordonnées lat/long
