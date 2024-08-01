@@ -36,6 +36,8 @@ GED_file_list = file_GED.readlines() #Fichier GED d'entrée sous forme de liste
 coord_file_list = file_coord.readlines() #Fichier des coordonnées d'entrée sous forme de liste
 GED_mod_file_list = [] #Liste du GED complété
 
+unfound_INSEE = [] #Liste des codes INSEE non trouvés dans la base de données des coordonnées géographiques
+
 nb_insertion = 0 #Variable pour compter le nombre d'insertion de coordonnées et corriger la dérive entre le fichier GED d'entrée et sa copie
 
 GED_file_list[1:1] = ['1 PLAC\n', '2 FORM city, area code, county, state, country\n'] #Ajout dans l'en-tête de la description du format des lieux
@@ -64,7 +66,9 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
             nb_insertion += 1
         
         else:
-            print("Non trouvé pour le code INSEE :", INSEE)
+            if INSEE not in unfound_INSEE:
+                print("Non trouvé pour le code INSEE :", INSEE)
+                unfound_INSEE.append(INSEE)
 
 
 ##Ecriture fichier GED modifié, complété avec les coordonnées lat/long
