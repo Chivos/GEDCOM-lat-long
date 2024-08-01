@@ -48,7 +48,8 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
     line_GED = re.sub(r"\[.*] - " , '', line_GED) #Suppression du lieu dit au format Geneanet "[Lieu-dit] - "
     GED_mod_file_list.append(line_GED) #copie de la ligne GED en cours
 
-    INSEE = re.search(r"\bPLAC\b.*(\d{5})", line_GED) #en série text avec PLAC, des caractères et 5 digits
+    #INSEE = re.search(r"\bPLAC\b.*(\d{5})", line_GED) #en série text avec PLAC, des caractères et 5 digits
+    INSEE = re.search(r"\bPLAC\b.*(\d\w\d{3})", line_GED) #en série text avec PLAC, des caractères et 1 digit, 1 lettre ou chiffre puis 3 digits, pour Corse
 
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
