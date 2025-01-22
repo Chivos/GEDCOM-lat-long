@@ -16,7 +16,7 @@ def recherche_coord(coord_file_list, INSEE):
             break
 
 
-    return(lat_long)
+    return(lat_long, line_coord)
 
 ###################################################################################################
 ###################  FIN FONCTIONS, DEBUT SCRIPT  ###################
@@ -56,9 +56,10 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
         
-        lat_long = recherche_coord(coord_file_list, INSEE)
+        lat_long, line_coord = recherche_coord(coord_file_list, INSEE) #réception des coorodnnées et de la ligne complète du fichier source
         
         if lat_long != False:
+            coord_file_list.insert(0, line_coord) #insertion de la ligne complète en tête du fichier source pour optimisation temps
             GED_mod_file_list.insert(line_number_GED+1 + nb_insertion*3, "3 MAP\n")
             GED_mod_file_list.insert(line_number_GED+2 + nb_insertion*3, "4 LATI N" + lat_long[0] + "\n")
             GED_mod_file_list.insert(line_number_GED+3 + nb_insertion*3, "4 LONG E" + lat_long[1] + "\n")
