@@ -16,7 +16,7 @@ def recherche_coord(coord_file_list, INSEE):
             break
 
 
-    return(lat_long, line_coord)
+    return(lat_long, line_coord, line_number_coord)
 
 ###################################################################################################
 ###################  FIN FONCTIONS, DEBUT SCRIPT  ###################
@@ -56,14 +56,14 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
         
-        lat_long, line_coord = recherche_coord(coord_file_list, INSEE) #réception des coordonnées et de la ligne complète du fichier source
+        lat_long, line_coord, index = recherche_coord(coord_file_list, INSEE) #réception des coordonnées et de la ligne complète du fichier source, et de son index
         
         if lat_long != False:
             ## optimisation vitesse
             #coord_file_list.insert(0, line_coord) #insertion de la ligne complète en tête du fichier source pour optimisation temps
                 #semble le plus rapide mais augmente la taille de la liste des coordonnées
                 #devrait être moins efficace sur très grand GEDCOM
-            index = coord_file_list.index(line_coord) #recherche index de l'élément de la liste des coordonnées
+           
             if index > 100: #ne pas reconstruire la liste systématiquement si coordonnées bien placées
                 coord_file_list = [line_coord] + coord_file_list[:index] + coord_file_list[index+1:] #le déplace en premier et reconstruit la liste par slices
             
