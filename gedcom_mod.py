@@ -84,6 +84,7 @@ for ligne_ecriture in GED_mod_file_list:
     file_GED_mod.write(ligne_ecriture)
 
 fin = time()
+print("-------------------------------------")
 print("Nombre de coordonnées ajoutées :", nb_insertion)
 print("Durée :", round(fin-debut, 1), "secondes")
 print("Vitesse :", round(nb_insertion/(fin-debut),1), "ajouts par seconde")
