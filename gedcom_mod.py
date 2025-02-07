@@ -56,15 +56,16 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
     if INSEE: #Si un code INSEE est trouvé sur la ligne
         INSEE = INSEE.group(1)
         
-        lat_long, line_coord = recherche_coord(coord_file_list, INSEE) #réception des coorodnnées et de la ligne complète du fichier source
+        lat_long, line_coord = recherche_coord(coord_file_list, INSEE) #réception des coordonnées et de la ligne complète du fichier source
         
         if lat_long != False:
             ## optimisation vitesse
             #coord_file_list.insert(0, line_coord) #insertion de la ligne complète en tête du fichier source pour optimisation temps
                 #semble le plus rapide mais augmente la taille de la liste des coordonnées
                 #devrait être moins efficace sur très grand GEDCOM
-            index = coord_file_list.index(line_coord) #recherche index de l'élément de la liste des coordonées
-            coord_file_list = [line_coord] + coord_file_list[:index] + coord_file_list[index+1:] #le déplace en premier et reconstruit la liste par slices
+            index = coord_file_list.index(line_coord) #recherche index de l'élément de la liste des coordonnées
+            if index > 100: #ne pas reconstruire la liste systématiquement si coordonnées bien placées
+                coord_file_list = [line_coord] + coord_file_list[:index] + coord_file_list[index+1:] #le déplace en premier et reconstruit la liste par slices
             
             GED_mod_file_list.insert(line_number_GED+1 + nb_insertion*3, "3 MAP\n")
             GED_mod_file_list.insert(line_number_GED+2 + nb_insertion*3, "4 LATI N" + lat_long[0] + "\n")
