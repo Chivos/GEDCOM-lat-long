@@ -59,7 +59,13 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
         lat_long, line_coord = recherche_coord(coord_file_list, INSEE) #réception des coorodnnées et de la ligne complète du fichier source
         
         if lat_long != False:
-            coord_file_list.insert(0, line_coord) #insertion de la ligne complète en tête du fichier source pour optimisation temps
+            ## optimisation vitesse
+            #coord_file_list.insert(0, line_coord) #insertion de la ligne complète en tête du fichier source pour optimisation temps
+                #semble le plus rapide mais augmente la taille de la liste des coordonnées
+                #devrait être moins efficace sur très grand GEDCOM
+            index = coord_file_list.index(line_coord) #recherche index de l'élément de la liste des coordonées
+            coord_file_list = [line_coord] + coord_file_list[:index] + coord_file_list[index+1:] #le déplace en premier et reconstruit la liste par slices
+            
             GED_mod_file_list.insert(line_number_GED+1 + nb_insertion*3, "3 MAP\n")
             GED_mod_file_list.insert(line_number_GED+2 + nb_insertion*3, "4 LATI N" + lat_long[0] + "\n")
             GED_mod_file_list.insert(line_number_GED+3 + nb_insertion*3, "4 LONG E" + lat_long[1] + "\n")
@@ -76,6 +82,7 @@ for line_number_GED, line_GED in enumerate(GED_file_list):
 for ligne_ecriture in GED_mod_file_list:
     file_GED_mod.write(ligne_ecriture)
 
-
+fin = time()
 print("Nombre de coordonnées ajoutées :", nb_insertion)
-print("Durée :", round(time()-debut, 1), "secondes")
+print("Durée :", round(fin-debut, 1), "secondes")
+print("Vitesse :", round(nb_insertion/(fin-debut),1), "ajouts par seconde")
