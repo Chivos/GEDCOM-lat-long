@@ -10,7 +10,7 @@ En complément :
 - supprimer les lieux dits saisis au format Généanet
 - ajouter dans le header du GEDCOM la description du format de saisie des lieux
 
-L'exécution prend quelques dizaines de secondes, en fonction de la taille du fichier GED en entrée.
+L'exécution prend quelques secondes, en fonction de la taille du fichier GED en entrée.
 
 
 ### Utilisation
