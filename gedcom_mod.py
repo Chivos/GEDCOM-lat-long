@@ -20,7 +20,16 @@ def load_coord_dict(coord_file_path):
 
 
 # File paths
-adresse_GED = os.path.join(os.path.dirname(os.path.realpath(__file__)), "base.ged")
+
+# Obtenir le chemin du répertoire courant
+directory = os.getcwd()
+
+# Parcourir les fichiers dans le répertoire courant
+for filename in os.listdir(directory):
+    if filename.endswith('.ged') and filename != 'base_mod.ged':
+        base = filename
+        
+adresse_GED = os.path.join(os.path.dirname(os.path.realpath(__file__)), base)
 adresse_coord = os.path.join(os.path.dirname(os.path.realpath(__file__)), "FR.txt")
 adresse_GED_mod = os.path.join(os.path.dirname(os.path.realpath(__file__)), "base_mod.ged")
 
