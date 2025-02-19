@@ -64,7 +64,7 @@ for line in file_GED:
             unfound_INSEE.add(INSEE)
 
 print("-------------------------------------")
-print("Non trouvé pour les code INSEE suivants:")
+print("Non trouvé pour les codes INSEE suivants:")
 for item in unfound_INSEE:
     print(item)
 
