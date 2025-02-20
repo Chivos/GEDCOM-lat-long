@@ -47,6 +47,7 @@ GED_mod_file_list = [] #Liste du GED complété
 nb_insertion = 0 #Variable pour compter le nombre d'insertion de coordonnées et corriger la dérive entre le fichier GED d'entrée et sa copie
 unfound_INSEE = set() #Liste des codes INSEE non trouvés dans la base de données des coordonnées géographiques
 
+
 for line in file_GED:
     line_mod = re.sub(r"\[.*] - ", '', line) #Suppression du lieu dit au format Geneanet "[Lieu-dit] - "
     GED_mod_file_list.append(line_mod) #copie de la ligne en cours dans le futur GED
@@ -69,6 +70,11 @@ for item in unfound_INSEE:
     print(item)
 
 ##Ecriture fichier GED modifié, complété avec les coordonnées lat/long
+GED_mod_file_list.insert(1, '2 FORM city, area code, county, state, country\n')
+GED_mod_file_list.insert(1, '1 PLAC\n')
+
+#file_GED_mod[1:1] = ['1 PLAC\n', '2 FORM city, area code, county, state, country\n'] #Ajout dans l'en-tête de la description du format des lieux
+
 file_GED_mod.writelines(GED_mod_file_list)
 print("-------------------------------------")
 print("Nombre de coordonnées ajoutées :", nb_insertion)
