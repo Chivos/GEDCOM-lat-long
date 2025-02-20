@@ -65,15 +65,14 @@ for line in file_GED:
             unfound_INSEE.add(INSEE)
 
 print("-------------------------------------")
-print("Non trouvé pour les codes INSEE suivants:")
+print("Non trouvé pour les codes INSEE suivants :")
 for item in unfound_INSEE:
     print(item)
 
 ##Ecriture fichier GED modifié, complété avec les coordonnées lat/long
-GED_mod_file_list.insert(1, '2 FORM city, area code, county, state, country\n')
-GED_mod_file_list.insert(1, '1 PLAC\n')
 
-#file_GED_mod[1:1] = ['1 PLAC\n', '2 FORM city, area code, county, state, country\n'] #Ajout dans l'en-tête de la description du format des lieux
+GED_mod_file_list.insert(1, '2 FORM city, area code, county, state, country\n') #Ajout dans l'en-tête de la description du format des lieux
+GED_mod_file_list.insert(1, '1 PLAC\n')
 
 file_GED_mod.writelines(GED_mod_file_list)
 print("-------------------------------------")
@@ -81,5 +80,5 @@ print("Nombre de coordonnées ajoutées :", nb_insertion)
 
 fin = time()
 print("Durée :", round(fin - debut, 1), "secondes")
-print("Vitesse :", round(nb_insertion / (fin - debut), 1), "ajouts par seconde")
+print("Vitesse :", round(nb_insertion / (fin - debut)), "ajouts par seconde")
 print("-------------------------------------")
